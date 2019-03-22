@@ -1,0 +1,115 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/qipai_raffle
+
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+          zk-nodes: localhost:2181
+          minPartitionCount: 1
+          autoCreateTopics: true
+          autoAddPartitions: false
+        bindings:
+          prizeSend:
+            producer:
+              configuration:
+                request:
+                  timeout:
+                    ms: 30000
+                linger:
+                  ms: 5
+                batch:
+                  size: 16384
+          memberHongbaodianAccounting:
+            producer:
+              configuration:
+                request:
+                  timeout:
+                    ms: 30000
+                linger:
+                  ms: 5
+                batch:
+                  size: 16384
+      bindings:
+        memberHongbaodianAccounting:
+          destination: memberHongbaodianAccounting
+          contentType: application/json
+          producer:
+            partitionCount: 1
+        prizeSend:
+          destination: prizeSend
+          contentType: application/json
+          producer:
+            partitionCount: 1
+        juPrize:
+          destination: juPrize
+          group: qipai-raffle
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+        ruianMajiangResult:
+          destination: ruianMajiangResult
+          group: qipai-raffle
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+        fangpaoMajiangResult:
+          destination: fangpaoMajiangResult
+          group: qipai-raffle
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+        wenzhouMajiangResult:
+          destination: wenzhouMajiangResult
+          group: qipai-raffle
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+        dianpaoMajiangResult:
+          destination: dianpaoMajiangResult
+          group: qipai-raffle
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+        wenzhouShuangkouResult:
+          destination: wenzhouShuangkouResult
+          group: qipai-raffle
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+        doudizhuResult:
+          destination: doudizhuResult
+          group: qipai-raffle
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+        paodekuaiResult:
+          destination: paodekuaiResult
+          group: qipai-raffle
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+  application:
+    name: qipai-raffle
+server:
+  port: 102
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+
+filepath:
+  snapshotFileBasePath: /data/app/qipai_raffle/snapshot
+  jFileBasePath: /data/app/qipai_raffle/journal
