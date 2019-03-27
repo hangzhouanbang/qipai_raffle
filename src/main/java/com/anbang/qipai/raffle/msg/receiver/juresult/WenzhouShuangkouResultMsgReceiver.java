@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.anbang.qipai.raffle.cqrs.c.service.JuPrizeCmdService;
 import com.anbang.qipai.raffle.msg.channel.sink.juresult.WenzhouShuangkouResultSink;
 import com.anbang.qipai.raffle.msg.msjobs.CommonMO;
+import com.anbang.qipai.raffle.msg.msjobs.panpalyer.WenzhouMajiangPanPlayerResultMO;
+import com.anbang.qipai.raffle.msg.msjobs.panpalyer.WenzhouShuangkouPanPlayerResultMO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +33,18 @@ public class WenzhouShuangkouResultMsgReceiver {
 	public void recordMajiangHistoricalResult(CommonMO mo) {
 		String msg = mo.getMsg();
 		String json = gson.toJson(mo.getData());
-		Map map = gson.fromJson(json, Map.class);
-		if ("wenzhoushuangkou ju result".equals(msg)) {
-			Object dyjId = map.get("dayingjiaId");
+		if ("wenzhoushuangkou pan result".equals(msg)) {
 			try {
-				juPrizeCmdService.updateCalTimes((String)dyjId);
+				JSONObject data = JSON.parseObject(json);
+				String playerResultJson = JSON.toJSONString(data.get("playerResultList"));
+				List<WenzhouShuangkouPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, WenzhouShuangkouPanPlayerResultMO.class);
+				for (WenzhouShuangkouPanPlayerResultMO list : playerResultList) {
+					if (list.getMingcifen().isYing()) {
+						juPrizeCmdService.updateCalTimes(list.getPlayerId());
+					}
+				}
 			} catch (Exception e) {
-				logger.error("updateCalTimes----" + JSON.toJSONString(dyjId) + JSON.toJSONString(e));
+				logger.error("updateCalTimes----" + JSON.toJSONString(json) + JSON.toJSONString(e));
 			}
 		}
 

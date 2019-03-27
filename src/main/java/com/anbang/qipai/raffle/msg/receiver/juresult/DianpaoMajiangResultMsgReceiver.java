@@ -1,11 +1,14 @@
 package com.anbang.qipai.raffle.msg.receiver.juresult;
 
+import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.anbang.qipai.raffle.cqrs.c.service.JuPrizeCmdService;
 import com.anbang.qipai.raffle.msg.channel.sink.juresult.DianpaoMajiangResultSink;
 import com.anbang.qipai.raffle.msg.msjobs.CommonMO;
+import com.anbang.qipai.raffle.msg.msjobs.panpalyer.DianpaoMajiangPanPlayerResultMO;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +30,18 @@ public class DianpaoMajiangResultMsgReceiver {
 	public void recordMajiangHistoricalResult(CommonMO mo) {
 		String msg = mo.getMsg();
 		String json = gson.toJson(mo.getData());
-		Map map = gson.fromJson(json, Map.class);
-		if ("dianpaomajiang ju result".equals(msg)) {
-			Object dyjId = map.get("dayingjiaId");
+		if ("dianpaomajiang pan result".equals(msg)) {
 			try {
-				juPrizeCmdService.updateCalTimes((String)dyjId);
+				JSONObject data = JSON.parseObject(json);
+				String playerResultJson = JSON.toJSONString(data.get("playerResultList"));
+				List<DianpaoMajiangPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, DianpaoMajiangPanPlayerResultMO.class);
+				for (DianpaoMajiangPanPlayerResultMO list : playerResultList) {
+					if (list.isHu()) {
+						juPrizeCmdService.updateCalTimes(list.getPlayerId());
+					}
+				}
 			} catch (Exception e) {
-				logger.error("updateCalTimes----" + JSON.toJSONString(dyjId) + JSON.toJSONString(e));
+				logger.error("updateCalTimes----" + JSON.toJSONString(json) + JSON.toJSONString(e));
 			}
 
 		}
