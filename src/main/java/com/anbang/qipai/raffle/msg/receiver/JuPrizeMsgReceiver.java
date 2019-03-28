@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class JuPrizeMsgReceiver {
         if ("juPrizeRelease".equals(msg)) {
             try {
                 List<JuPrizeRelease> juPrizeReleases = JSON.parseArray(json, JuPrizeRelease.class);
-                juPrizeCmdService.release(juPrizeReleases);
+                juPrizeCmdService.release(new ArrayList(juPrizeReleases));
 
                 for (JuPrizeRelease list : juPrizeReleases) {
                     juPrizeReleaseDao.save(list);

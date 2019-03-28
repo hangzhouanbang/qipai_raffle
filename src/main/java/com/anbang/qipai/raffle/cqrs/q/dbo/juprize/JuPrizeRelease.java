@@ -1,14 +1,18 @@
 package com.anbang.qipai.raffle.cqrs.q.dbo.juprize;
 
 import com.anbang.qipai.raffle.plan.bean.Game;
+import com.highto.framework.nio.ByteBufferAble;
+import com.highto.framework.nio.ByteBufferSerializer;
 import org.springframework.data.annotation.Id;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @Description: 对局奖励发布
  */
-public class JuPrizeRelease {
+public class JuPrizeRelease implements ByteBufferAble {
     @Id
     private Game game;
     private boolean release;
@@ -55,5 +59,26 @@ public class JuPrizeRelease {
 
     public void setGeneralJuPrizes(List<JuPrize> generalJuPrizes) {
         this.generalJuPrizes = generalJuPrizes;
+    }
+
+    @Override
+    public void toByteBuffer(ByteBuffer bb) throws Throwable {
+        bb.put((byte) game.ordinal());
+        ByteBufferSerializer.booleanToByteBuffer(release, bb);
+        bb.putLong(creatTime);
+        ByteBufferSerializer.listToByteBuffer(new ArrayList<>(firstJuPrizes), bb);
+
+        ByteBufferSerializer.listToByteBuffer(new ArrayList<>(generalJuPrizes), bb);
+    }
+
+    @Override
+    public void fillByByteBuffer(ByteBuffer bb) throws Throwable {
+        game = Game.valueOf(Byte.toUnsignedInt(bb.get()));
+        release = ByteBufferSerializer.byteBufferToBoolean(bb);
+        creatTime = bb.getLong();
+        firstJuPrizes = new ArrayList<>();
+        ByteBufferSerializer.byteBufferToList(bb).forEach((o) -> firstJuPrizes.add((JuPrize) o));
+        generalJuPrizes = new ArrayList<>();
+        ByteBufferSerializer.byteBufferToList(bb).forEach((o) -> generalJuPrizes.add((JuPrize) o));
     }
 }

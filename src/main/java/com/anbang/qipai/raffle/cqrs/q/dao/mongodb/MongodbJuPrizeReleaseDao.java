@@ -2,6 +2,7 @@ package com.anbang.qipai.raffle.cqrs.q.dao.mongodb;
 
 import com.anbang.qipai.raffle.cqrs.q.dbo.juprize.JuPrizeRelease;
 import com.anbang.qipai.raffle.cqrs.q.dao.JuPrizeReleaseDao;
+import com.anbang.qipai.raffle.plan.bean.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -25,15 +26,15 @@ public class MongodbJuPrizeReleaseDao implements JuPrizeReleaseDao {
     }
 
     @Override
-    public void delete(String id) {
-        Query query = new Query(Criteria.where("id").is(id));
+    public void delete(Game game) {
+        Query query = new Query(Criteria.where("game").is(game));
         mongoTemplate.remove(query, JuPrizeRelease.class);
     }
 
     @Override
-    public JuPrizeRelease getJuPrizeRelease(String game) {
+    public JuPrizeRelease getJuPrizeRelease(Game game) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(game));
+        query.addCriteria(Criteria.where("game").is(game));
         return mongoTemplate.findOne(query, JuPrizeRelease.class);
     }
 

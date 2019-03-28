@@ -9,6 +9,8 @@ import com.anbang.qipai.raffle.cqrs.c.service.JuPrizeCmdService;
 import com.anbang.qipai.raffle.msg.channel.sink.juresult.DianpaoMajiangResultSink;
 import com.anbang.qipai.raffle.msg.msjobs.CommonMO;
 import com.anbang.qipai.raffle.msg.msjobs.panpalyer.DianpaoMajiangPanPlayerResultMO;
+import com.anbang.qipai.raffle.plan.bean.PrizeCheck;
+import com.anbang.qipai.raffle.plan.dao.PrizeCheckDao;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,9 @@ public class DianpaoMajiangResultMsgReceiver {
 	@Autowired
 	private JuPrizeCmdService juPrizeCmdService;
 
+	@Autowired
+	private PrizeCheckDao prizeCheckDao;
+
 	private Gson gson = new Gson();
 
 	Logger logger = LoggerFactory.getLogger(getClass());
@@ -33,6 +38,17 @@ public class DianpaoMajiangResultMsgReceiver {
 		if ("dianpaomajiang pan result".equals(msg)) {
 			try {
 				JSONObject data = JSON.parseObject(json);
+
+				// 防止重复消费
+//				String gameId = data.getString("gameId");
+//				PrizeCheck prizeCheck = prizeCheckDao.getPrizeCheck(gameId);
+//				if (prizeCheck != null) {
+//					return;
+//				}
+//				prizeCheck = new PrizeCheck();
+//				prizeCheck.setId(gameId);
+//				prizeCheckDao.save(prizeCheck);
+
 				String playerResultJson = JSON.toJSONString(data.get("playerResultList"));
 				List<DianpaoMajiangPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, DianpaoMajiangPanPlayerResultMO.class);
 				for (DianpaoMajiangPanPlayerResultMO list : playerResultList) {

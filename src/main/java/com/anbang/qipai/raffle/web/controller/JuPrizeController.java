@@ -2,11 +2,10 @@ package com.anbang.qipai.raffle.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.anbang.qipai.raffle.cqrs.c.domain.juprize.JuPrizeResult;
+import com.anbang.qipai.raffle.cqrs.c.domain.juprize.NoFindJuPrizeException;
 import com.anbang.qipai.raffle.cqrs.c.service.JuPrizeCmdService;
 import com.anbang.qipai.raffle.cqrs.c.service.MemberAuthService;
-import com.anbang.qipai.raffle.cqrs.q.dbo.juprize.JuPrize;
-import com.anbang.qipai.raffle.cqrs.q.dbo.juprize.JuPrizeAccount;
-import com.anbang.qipai.raffle.cqrs.q.dbo.juprize.JuPrizeRecord;
+import com.anbang.qipai.raffle.cqrs.q.dbo.juprize.*;
 import com.anbang.qipai.raffle.msg.service.MemberHongbaodianMsgService;
 import com.anbang.qipai.raffle.msg.service.PrizeSendMsgService;
 import com.anbang.qipai.raffle.plan.bean.Game;
@@ -50,11 +49,16 @@ public class JuPrizeController {
     /**
      * 查询局奖励信息
      */
-    @PostMapping("/queryJuPinzeInfo")
-    public CommonVO queryJuPrizeInfo(String token) {
+    @RequestMapping("/queryJuPinzeInfo")
+    public CommonVO queryJuPrizeInfo(String token, Game game) {
         String memberId = memberAuthService.getMemberIdBySessionId(token);
         if (memberId == null) {
             return CommonVOUtil.invalidToken();
+        }
+
+        JuPrizeRelease juPrizeRelease = juPrizeBusinessService.getJuPrizeReleaseById(game);
+        if (juPrizeRelease == null) {
+            return CommonVOUtil.success("not_release");
         }
 
         Map data = new HashMap();
@@ -68,7 +72,7 @@ public class JuPrizeController {
     /**
      * 对局抽奖
      */
-    @PostMapping("/raffleJuPrize")
+    @RequestMapping("/raffleJuPrize")
     public CommonVO raffleJuPrize(String token, Game game) {
         String memberId = memberAuthService.getMemberIdBySessionId(token);
         if (memberId == null) {
@@ -88,6 +92,17 @@ public class JuPrizeController {
                     break;
             }
 
+            // 抽奖记录
+            prizeSendMsgService.juPrizeSend(juPrizeRecord);
+
+            Map data = new HashMap();
+            data.put("name",juPrize.getName());
+            data.put("prizeType",juPrize.getPrizeType());
+            data.put("iconUrl",juPrize.getIconUrl());
+            data.put("singleNum",juPrize.getSingleNum());
+            return CommonVOUtil.success(data, "success");
+        } catch (NoFindJuPrizeException e){
+            return CommonVOUtil.error(e.getClass().getName());
         } catch (Exception e) {
             logger.error("raffleJuPrize-" + JSON.toJSONString(e) + memberId + game);
         }
@@ -99,7 +114,7 @@ public class JuPrizeController {
      * test
      */
     @Deprecated
-    @PostMapping("/addCalTimes")
+    @RequestMapping("/addCalTimes")
     public CommonVO addCalTimes(String token) {
         String memberId = memberAuthService.getMemberIdBySessionId(token);
         if (memberId == null) {

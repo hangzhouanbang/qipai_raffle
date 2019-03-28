@@ -12,6 +12,7 @@ import com.highto.framework.ddd.CommonCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class DisruptorJuPrizeCmdService extends DisruptorCmdServiceBase implemen
     private JuPrizeCmdServiceImpl juPrizeCmdService;
 
     @Override
-    public void release(List<JuPrizeRelease> juPrizeReleases) {
+    public void release(ArrayList<JuPrizeRelease> juPrizeReleases) {
         CommonCommand cmd = new CommonCommand(JuPrizeCmdServiceImpl.class.getName(), "release", juPrizeReleases);
         DeferredResult<String> result = publishEvent(disruptorFactory.getCoreCmdDisruptor(), cmd, () -> {
             juPrizeCmdService.release(cmd.getParameter());

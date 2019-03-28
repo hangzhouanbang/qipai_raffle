@@ -2,10 +2,11 @@ package com.anbang.qipai.raffle.cqrs.q.dbo.juprize;
 
 
 /**
- * @Description:
+ * @Description: 对局奖励记录
  */
 public class JuPrizeRecord {
     private String id;
+    private String playerId;
     private long sendTime;
     private JuPrize juPrize;
 
@@ -15,6 +16,14 @@ public class JuPrizeRecord {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
     }
 
     public long getSendTime() {

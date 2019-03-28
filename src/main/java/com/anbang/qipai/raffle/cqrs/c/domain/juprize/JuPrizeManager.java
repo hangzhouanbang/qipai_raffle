@@ -18,7 +18,7 @@ public class JuPrizeManager {
 
 
     // 发布奖励概率
-    public void release(List<JuPrizeRelease> juPrizeReleases) {
+    public void release(ArrayList<JuPrizeRelease> juPrizeReleases) {
         for (JuPrizeRelease list : juPrizeReleases) {
             releaseMap.put(list.getGame(), list);
         }
@@ -27,7 +27,7 @@ public class JuPrizeManager {
     // 抽奖
     public JuPrizeResult raffle(String id, Game game) throws NoFindJuPrizeException, NoRewardTimesException {
         JuPrizeRelease juPrizeRelease = releaseMap.get(game);
-        if (juPrizeRelease == null || juPrizeRelease.isRelease()) {
+        if (juPrizeRelease == null || !juPrizeRelease.isRelease()) {
             throw new NoFindJuPrizeException();
         }
 
@@ -95,11 +95,12 @@ public class JuPrizeManager {
             juPrizeAccountMap.put(id, new JuPrizeAccount(id, 5));
         }
         account.setCalTimes(account.getCalTimes() - 1);
+        account.setUpdateTime(System.currentTimeMillis());
         if (account.getCalTimes() == 0) {
             account.setCalTimes(5);
             account.setRewardTimes(account.getRewardTimes() + 1);
-            account.setUpdateTime(System.currentTimeMillis());
         }
+
         return new JuPrizeResult(account);
     }
 

@@ -9,12 +9,13 @@ import com.anbang.qipai.raffle.cqrs.q.dbo.juprize.JuPrizeRelease;
 import com.anbang.qipai.raffle.plan.bean.Game;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class JuPrizeCmdServiceImpl extends CmdServiceBase implements JuPrizeCmdService {
     @Override
-    public void release(List<JuPrizeRelease> juPrizeReleases) {
+    public void release(ArrayList<JuPrizeRelease> juPrizeReleases) {
         JuPrizeManager juPrizeManager = singletonEntityRepository.getEntity(JuPrizeManager.class);
         juPrizeManager.release(juPrizeReleases);
     }

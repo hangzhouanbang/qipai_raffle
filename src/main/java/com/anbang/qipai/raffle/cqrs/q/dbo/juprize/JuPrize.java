@@ -1,11 +1,18 @@
 package com.anbang.qipai.raffle.cqrs.q.dbo.juprize;
 
+import com.alibaba.fastjson.JSON;
+import com.highto.framework.nio.ByteBufferAble;
+import com.highto.framework.nio.ByteBufferSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.nio.ByteBuffer;
 import java.util.Objects;
 
 /**
  * @Description: 对局奖励物品
  */
-public class JuPrize {
+public class JuPrize implements ByteBufferAble {
     private String id;
     private String name;
     private JuPrizeTypeEnum prizeType;//奖品类型
@@ -109,5 +116,35 @@ public class JuPrize {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, prizeType, singleNum, storeNum, iconUrl, prizeProb, overstep, drawType);
+    }
+
+    @Override
+    public void toByteBuffer(ByteBuffer bb) throws Throwable {
+        ByteBufferSerializer.stringToByteBuffer(id, bb);
+        ByteBufferSerializer.stringToByteBuffer(name, bb);
+        bb.put((byte) prizeType.ordinal());
+        ByteBufferSerializer.stringToByteBuffer(iconUrl, bb);
+
+        bb.putInt(singleNum);
+        bb.putInt(storeNum);
+        bb.putInt(prizeProb);
+        ByteBufferSerializer.booleanToByteBuffer(overstep, bb);
+
+        bb.put((byte) drawType.ordinal());
+    }
+
+    @Override
+    public void fillByByteBuffer(ByteBuffer bb) throws Throwable {
+        id = ByteBufferSerializer.byteBufferToString(bb);
+        name = ByteBufferSerializer.byteBufferToString(bb);
+        prizeType = JuPrizeTypeEnum.valueOf(Byte.toUnsignedInt(bb.get()));
+        iconUrl = ByteBufferSerializer.byteBufferToString(bb);
+
+        singleNum = bb.getInt();
+        storeNum = bb.getInt();
+        prizeProb = bb.getInt();
+        overstep = ByteBufferSerializer.byteBufferToBoolean(bb);
+
+        drawType = DrawTypeEnum.valueOf(Byte.toUnsignedInt(bb.get()));
     }
 }
