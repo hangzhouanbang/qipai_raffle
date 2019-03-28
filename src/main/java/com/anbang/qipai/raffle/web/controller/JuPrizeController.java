@@ -57,7 +57,7 @@ public class JuPrizeController {
         }
 
         JuPrizeRelease juPrizeRelease = juPrizeBusinessService.getJuPrizeReleaseById(game);
-        if (juPrizeRelease == null) {
+        if (juPrizeRelease == null || !juPrizeRelease.isRelease()) {
             return CommonVOUtil.success("not_release");
         }
 
