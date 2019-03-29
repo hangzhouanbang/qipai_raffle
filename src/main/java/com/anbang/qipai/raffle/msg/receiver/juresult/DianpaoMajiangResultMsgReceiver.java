@@ -39,6 +39,11 @@ public class DianpaoMajiangResultMsgReceiver {
 			try {
 				JSONObject data = JSON.parseObject(json);
 
+				long finishTime = data.getLong("finishTime");
+				if (finishTime < 1553826334000L) {
+					return;
+				}
+
 				// 防止重复消费
 //				String gameId = data.getString("gameId");
 //				PrizeCheck prizeCheck = prizeCheckDao.getPrizeCheck(gameId);

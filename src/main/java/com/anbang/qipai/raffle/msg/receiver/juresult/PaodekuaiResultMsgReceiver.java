@@ -35,6 +35,12 @@ public class PaodekuaiResultMsgReceiver {
 		if ("paodekuai pan result".equals(msg)) {
 			try {
 				JSONObject data = JSON.parseObject(json);
+
+				long finishTime = data.getLong("finishTime");
+				if (finishTime < 1553826334000L) {
+					return;
+				}
+
 				String playerResultJson = JSON.toJSONString(data.get("playerResultList"));
 				List<PaodekuaiPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, PaodekuaiPanPlayerResultMO.class);
 				for (PaodekuaiPanPlayerResultMO list : playerResultList) {

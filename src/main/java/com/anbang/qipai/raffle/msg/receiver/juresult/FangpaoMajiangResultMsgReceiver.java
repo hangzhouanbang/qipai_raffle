@@ -35,6 +35,12 @@ public class FangpaoMajiangResultMsgReceiver {
 		if ("fangpaomajiang pan result".equals(msg)) {
 			try {
 				JSONObject data = JSON.parseObject(json);
+
+				long finishTime = data.getLong("finishTime");
+				if (finishTime < 1553826334000L) {
+					return;
+				}
+
 				String playerResultJson = JSON.toJSONString(data.get("playerResultList"));
 				List<FangpaoMajiangPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, FangpaoMajiangPanPlayerResultMO.class);
 				for (FangpaoMajiangPanPlayerResultMO list : playerResultList) {

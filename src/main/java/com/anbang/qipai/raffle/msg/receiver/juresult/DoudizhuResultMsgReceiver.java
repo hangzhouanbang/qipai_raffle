@@ -35,6 +35,12 @@ public class DoudizhuResultMsgReceiver {
 		if ("doudizhu pan result".equals(msg)) {
 			try {
 				JSONObject data = JSON.parseObject(json);
+
+				long finishTime = data.getLong("finishTime");
+				if (finishTime < 1553826334000L) {
+					return;
+				}
+
 				String playerResultJson = JSON.toJSONString(data.get("playerResultList"));
 				List<DoudizhuPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, DoudizhuPanPlayerResultMO.class);
 				for (DoudizhuPanPlayerResultMO list : playerResultList) {

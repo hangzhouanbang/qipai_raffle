@@ -35,6 +35,12 @@ public class RuianMajiangResultMsgReceiver {
 		if ("ruianmajiang pan result".equals(msg)) {
 			try {
 				JSONObject data = JSON.parseObject(json);
+
+				long finishTime = data.getLong("finishTime");
+				if (finishTime < 1553826334000L) {
+					return;
+				}
+
 				String playerResultJson = JSON.toJSONString(data.get("playerResultList"));
 				List<RuianMajiangPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, RuianMajiangPanPlayerResultMO.class);
 				for (RuianMajiangPanPlayerResultMO list : playerResultList) {

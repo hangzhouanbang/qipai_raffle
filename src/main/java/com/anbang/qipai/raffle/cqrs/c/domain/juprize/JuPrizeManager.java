@@ -76,7 +76,7 @@ public class JuPrizeManager {
                 }
 
                 if (storeNum < 0) { //不可超额且奖池不够
-                    list.setStoreNum(storeNum);
+//                    list.setStoreNum(storeNum);
                     List<JuPrize> tempJuPrizes = new ArrayList<>(juPrizes);
                     tempJuPrizes.remove(list);
                     return toRaffle(juPrizes);
@@ -115,6 +115,7 @@ public class JuPrizeManager {
             if (nowTime / DAY_MESC != account.getUpdateTime() / DAY_MESC) {
                 account.setCalTimes(5);
                 account.setDayTimes(0);
+                account.setRewardTimes(0);
             }
         }
 

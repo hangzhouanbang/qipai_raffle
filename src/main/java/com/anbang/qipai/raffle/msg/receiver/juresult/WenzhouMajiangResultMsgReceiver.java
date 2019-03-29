@@ -35,6 +35,12 @@ public class WenzhouMajiangResultMsgReceiver {
 		if ("wenzhoumajiang pan result".equals(msg)) {
 			try {
 				JSONObject data = JSON.parseObject(json);
+
+				long finishTime = data.getLong("finishTime");
+				if (finishTime < 1553826334000L) {
+					return;
+				}
+
 				String playerResultJson = JSON.toJSONString(data.get("playerResultList"));
 				List<WenzhouMajiangPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, WenzhouMajiangPanPlayerResultMO.class);
 				for (WenzhouMajiangPanPlayerResultMO list : playerResultList) {
