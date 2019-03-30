@@ -19,6 +19,7 @@ public class JuPrizeAccount {
     public JuPrizeAccount(String id, int calTimes) {
         this.id = id;
         this.calTimes = calTimes;
+        this.updateTime = System.currentTimeMillis();
     }
 
     public String getId() {

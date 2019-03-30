@@ -8,7 +8,6 @@ import com.anbang.qipai.raffle.plan.bean.Game;
 import java.util.*;
 
 public class JuPrizeManager {
-    private static final int TOTAL_PRIZEPROB = 10000;   // 总奖励概率的和
     private static final long DAY_MESC = 24 * 60 * 60 * 1000;
 
     private Map<Game, JuPrizeRelease> releaseMap = new HashMap();
@@ -54,7 +53,6 @@ public class JuPrizeManager {
         account.setRewardTimes(account.getRewardTimes() - 1);
         account.setDayTimes(account.getDayTimes() + 1);
         account.setTotalTimes(account.getTotalTimes() + 1);
-        account.setUpdateTime(System.currentTimeMillis());
         return new JuPrizeResult(juPrize, account, juPrizeRelease);
     }
 
@@ -95,7 +93,6 @@ public class JuPrizeManager {
             juPrizeAccountMap.put(id, new JuPrizeAccount(id, 5));
         }
         account.setCalTimes(account.getCalTimes() - 1);
-        account.setUpdateTime(System.currentTimeMillis());
         if (account.getCalTimes() == 0) {
             account.setCalTimes(5);
             account.setRewardTimes(account.getRewardTimes() + 1);
@@ -117,6 +114,7 @@ public class JuPrizeManager {
                 account.setDayTimes(0);
                 account.setRewardTimes(0);
             }
+            account.setUpdateTime(nowTime);
         }
 
         return new JuPrizeResult(account);
