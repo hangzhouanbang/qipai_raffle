@@ -45,7 +45,7 @@ public class PaodekuaiResultMsgReceiver {
 				List<PaodekuaiPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, PaodekuaiPanPlayerResultMO.class);
 				for (PaodekuaiPanPlayerResultMO list : playerResultList) {
 					if (list.isYing()) {
-						juPrizeCmdService.updateCalTimes(list.getPlayerId());
+						juPrizeCmdService.updateCalTimes(list.getPlayerId(), System.currentTimeMillis());
 					}
 				}
 			} catch (Exception e) {

@@ -46,7 +46,7 @@ public class WenzhouShuangkouResultMsgReceiver {
 				List<WenzhouShuangkouPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, WenzhouShuangkouPanPlayerResultMO.class);
 				for (WenzhouShuangkouPanPlayerResultMO list : playerResultList) {
 					if (list.getMingcifen().isYing()) {
-						juPrizeCmdService.updateCalTimes(list.getPlayerId());
+						juPrizeCmdService.updateCalTimes(list.getPlayerId(), System.currentTimeMillis());
 					}
 				}
 			} catch (Exception e) {

@@ -62,7 +62,8 @@ public class JuPrizeController {
         }
 
         Map data = new HashMap();
-        JuPrizeAccount juPrizeAccount = juPrizeCmdService.getRewardTims(memberId).getJuPrizeAccount();
+        Long nowTime = System.currentTimeMillis();
+        JuPrizeAccount juPrizeAccount = juPrizeCmdService.getRewardTims(memberId, nowTime).getJuPrizeAccount();
         juPrizeBusinessService.saveJuPrizeAccount(juPrizeAccount);
         data.put("juPrizeAccount", juPrizeAccount);
         return CommonVOUtil.success(data, "success");
@@ -81,7 +82,7 @@ public class JuPrizeController {
 
         try {
             // 抽奖
-            JuPrizeResult juPrizeResult = juPrizeCmdService.raffle(memberId, game);
+            JuPrizeResult juPrizeResult = juPrizeCmdService.raffle(memberId, game, System.currentTimeMillis());
             JuPrizeRecord juPrizeRecord = juPrizeBusinessService.saveRaffle(juPrizeResult);
             JuPrize juPrize = juPrizeResult.getJuPrize();
 
@@ -122,7 +123,7 @@ public class JuPrizeController {
         }
 
         try {
-            JuPrizeResult juPrizeResult = juPrizeCmdService.updateCalTimes(memberId);
+            JuPrizeResult juPrizeResult = juPrizeCmdService.updateCalTimes(memberId, System.currentTimeMillis());
             return CommonVOUtil.success(juPrizeResult, "success");
         } catch (Exception e) {
             logger.error("raffleJuPrize-" + JSON.toJSONString(e) + memberId);

@@ -45,7 +45,7 @@ public class WenzhouMajiangResultMsgReceiver {
 				List<WenzhouMajiangPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, WenzhouMajiangPanPlayerResultMO.class);
 				for (WenzhouMajiangPanPlayerResultMO list : playerResultList) {
 					if (list.isHu()) {
-						juPrizeCmdService.updateCalTimes(list.getPlayerId());
+						juPrizeCmdService.updateCalTimes(list.getPlayerId(), System.currentTimeMillis());
 					}
 				}
 			} catch (Exception e) {

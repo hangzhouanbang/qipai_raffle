@@ -24,7 +24,7 @@ public class JuPrizeManager {
     }
 
     // 抽奖
-    public JuPrizeResult raffle(String id, Game game) throws NoFindJuPrizeException, NoRewardTimesException {
+    public JuPrizeResult raffle(String id, Game game, Long nowTime) throws NoFindJuPrizeException, NoRewardTimesException {
         JuPrizeRelease juPrizeRelease = releaseMap.get(game);
         if (juPrizeRelease == null || !juPrizeRelease.isRelease()) {
             throw new NoFindJuPrizeException();
@@ -32,7 +32,7 @@ public class JuPrizeManager {
 
         JuPrizeAccount account = juPrizeAccountMap.get(id);
         if (account == null) {
-            juPrizeAccountMap.put(id, new JuPrizeAccount(id, 5));
+            juPrizeAccountMap.put(id, new JuPrizeAccount(id, 5, nowTime));
         }
 
         if (account.getRewardTimes() == 0) {
@@ -87,10 +87,10 @@ public class JuPrizeManager {
         return null;
     }
 
-    public JuPrizeResult updateCalTimes(String id) {
+    public JuPrizeResult updateCalTimes(String id, Long nowTime) {
         JuPrizeAccount account = juPrizeAccountMap.get(id);
         if (account == null) {
-            juPrizeAccountMap.put(id, new JuPrizeAccount(id, 5));
+            juPrizeAccountMap.put(id, new JuPrizeAccount(id, 5, nowTime));
         }
         account.setCalTimes(account.getCalTimes() - 1);
         if (account.getCalTimes() == 0) {
@@ -101,14 +101,13 @@ public class JuPrizeManager {
         return new JuPrizeResult(account);
     }
 
-    public JuPrizeResult getRewardTims(String id) {
+    public JuPrizeResult getRewardTims(String id, Long nowTime) {
         JuPrizeAccount account = juPrizeAccountMap.get(id);
 
         if (account == null) {
-            account = new JuPrizeAccount(id, 5);
+            account = new JuPrizeAccount(id, 5, nowTime);
             juPrizeAccountMap.put(id, account);
         } else {
-            long nowTime = System.currentTimeMillis();
             if (nowTime / DAY_MESC != account.getUpdateTime() / DAY_MESC) {
                 account.setCalTimes(5);
                 account.setDayTimes(0);

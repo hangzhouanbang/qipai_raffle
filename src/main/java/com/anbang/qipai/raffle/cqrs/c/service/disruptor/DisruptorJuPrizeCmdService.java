@@ -33,10 +33,10 @@ public class DisruptorJuPrizeCmdService extends DisruptorCmdServiceBase implemen
     }
 
     @Override
-    public JuPrizeResult raffle(String id, Game game) throws NoFindJuPrizeException, NoRewardTimesException {
-        CommonCommand cmd = new CommonCommand(JuPrizeCmdServiceImpl.class.getName(), "raffle", id, game);
+    public JuPrizeResult raffle(String id, Game game, Long nowTime) throws NoFindJuPrizeException, NoRewardTimesException {
+        CommonCommand cmd = new CommonCommand(JuPrizeCmdServiceImpl.class.getName(), "raffle", id, game, nowTime);
         DeferredResult<JuPrizeResult> result = publishEvent(disruptorFactory.getCoreCmdDisruptor(), cmd, () -> {
-            JuPrizeResult juPrizeResult = juPrizeCmdService.raffle(cmd.getParameter(), cmd.getParameter());
+            JuPrizeResult juPrizeResult = juPrizeCmdService.raffle(cmd.getParameter(), cmd.getParameter(), cmd.getParameter());
             return juPrizeResult;
         });
         try {
@@ -53,10 +53,10 @@ public class DisruptorJuPrizeCmdService extends DisruptorCmdServiceBase implemen
     }
 
     @Override
-    public JuPrizeResult updateCalTimes(String id) {
-        CommonCommand cmd = new CommonCommand(JuPrizeCmdServiceImpl.class.getName(), "updateCalTimes", id);
+    public JuPrizeResult updateCalTimes(String id, Long nowTime) {
+        CommonCommand cmd = new CommonCommand(JuPrizeCmdServiceImpl.class.getName(), "updateCalTimes", id, nowTime);
         DeferredResult<JuPrizeResult> result = publishEvent(disruptorFactory.getCoreCmdDisruptor(), cmd, () -> {
-            JuPrizeResult juPrizeResult = juPrizeCmdService.updateCalTimes(cmd.getParameter());
+            JuPrizeResult juPrizeResult = juPrizeCmdService.updateCalTimes(cmd.getParameter(), cmd.getParameter());
             return juPrizeResult;
         });
         try {
@@ -67,10 +67,10 @@ public class DisruptorJuPrizeCmdService extends DisruptorCmdServiceBase implemen
     }
 
     @Override
-    public JuPrizeResult getRewardTims(String id) {
-        CommonCommand cmd = new CommonCommand(JuPrizeCmdServiceImpl.class.getName(), "getRewardTims", id);
+    public JuPrizeResult getRewardTims(String id, Long nowTime) {
+        CommonCommand cmd = new CommonCommand(JuPrizeCmdServiceImpl.class.getName(), "getRewardTims", id, nowTime);
         DeferredResult<JuPrizeResult> result = publishEvent(disruptorFactory.getCoreCmdDisruptor(), cmd, () -> {
-            JuPrizeResult juPrizeResult = juPrizeCmdService.getRewardTims(cmd.getParameter());
+            JuPrizeResult juPrizeResult = juPrizeCmdService.getRewardTims(cmd.getParameter(), cmd.getParameter());
             return juPrizeResult;
         });
         try {

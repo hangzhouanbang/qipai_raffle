@@ -20,18 +20,18 @@ public class JuPrizeCmdServiceImpl extends CmdServiceBase implements JuPrizeCmdS
         juPrizeManager.release(juPrizeReleases);
     }
 
-    public JuPrizeResult raffle(String id, Game game) throws NoFindJuPrizeException, NoRewardTimesException {
+    public JuPrizeResult raffle(String id, Game game, Long nowTime) throws NoFindJuPrizeException, NoRewardTimesException {
         JuPrizeManager juPrizeManager = singletonEntityRepository.getEntity(JuPrizeManager.class);
-        return juPrizeManager.raffle(id, game);
+        return juPrizeManager.raffle(id, game, nowTime);
     }
 
-    public JuPrizeResult updateCalTimes(String id) {
+    public JuPrizeResult updateCalTimes(String id, Long nowTime) {
         JuPrizeManager juPrizeManager = singletonEntityRepository.getEntity(JuPrizeManager.class);
-        return juPrizeManager.updateCalTimes(id);
+        return juPrizeManager.updateCalTimes(id, nowTime);
     }
 
-    public JuPrizeResult getRewardTims(String id) {
+    public JuPrizeResult getRewardTims(String id, Long nowTime) {
         JuPrizeManager juPrizeManager = singletonEntityRepository.getEntity(JuPrizeManager.class);
-        return juPrizeManager.getRewardTims(id);
+        return juPrizeManager.getRewardTims(id, nowTime);
     }
 }

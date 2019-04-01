@@ -45,7 +45,7 @@ public class FangpaoMajiangResultMsgReceiver {
 				List<FangpaoMajiangPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, FangpaoMajiangPanPlayerResultMO.class);
 				for (FangpaoMajiangPanPlayerResultMO list : playerResultList) {
 					if (list.isHu()) {
-						juPrizeCmdService.updateCalTimes(list.getPlayerId());
+						juPrizeCmdService.updateCalTimes(list.getPlayerId(), System.currentTimeMillis());
 					}
 				}
 			} catch (Exception e) {

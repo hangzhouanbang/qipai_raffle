@@ -45,7 +45,7 @@ public class DoudizhuResultMsgReceiver {
 				List<DoudizhuPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, DoudizhuPanPlayerResultMO.class);
 				for (DoudizhuPanPlayerResultMO list : playerResultList) {
 					if (list.isYing()) {
-						juPrizeCmdService.updateCalTimes(list.getPlayerId());
+						juPrizeCmdService.updateCalTimes(list.getPlayerId(), System.currentTimeMillis());
 					}
 				}
 			} catch (Exception e) {

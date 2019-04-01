@@ -12,9 +12,9 @@ import java.util.List;
 public interface JuPrizeCmdService {
     void release(ArrayList<JuPrizeRelease> juPrizeReleases);
 
-    JuPrizeResult raffle(String id, Game game) throws NoFindJuPrizeException, NoRewardTimesException;
+    JuPrizeResult raffle(String id, Game game, Long nowTime) throws NoFindJuPrizeException, NoRewardTimesException;
 
-    JuPrizeResult updateCalTimes(String id);
+    JuPrizeResult updateCalTimes(String id, Long nowTime);
 
-    JuPrizeResult getRewardTims(String id);
+    JuPrizeResult getRewardTims(String id, Long nowTime);
 }

@@ -16,10 +16,10 @@ public class JuPrizeAccount {
     public JuPrizeAccount() {
     }
 
-    public JuPrizeAccount(String id, int calTimes) {
+    public JuPrizeAccount(String id, int calTimes, Long nowTime) {
         this.id = id;
         this.calTimes = calTimes;
-        this.updateTime = System.currentTimeMillis();
+        this.updateTime = nowTime;
     }
 
     public String getId() {

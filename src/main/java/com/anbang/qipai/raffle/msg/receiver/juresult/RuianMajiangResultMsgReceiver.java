@@ -45,7 +45,7 @@ public class RuianMajiangResultMsgReceiver {
 				List<RuianMajiangPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, RuianMajiangPanPlayerResultMO.class);
 				for (RuianMajiangPanPlayerResultMO list : playerResultList) {
 					if (list.isHu()) {
-						juPrizeCmdService.updateCalTimes(list.getPlayerId());
+						juPrizeCmdService.updateCalTimes(list.getPlayerId(), System.currentTimeMillis());
 					}
 				}
 			} catch (Exception e) {

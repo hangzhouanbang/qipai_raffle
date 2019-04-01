@@ -58,7 +58,7 @@ public class DianpaoMajiangResultMsgReceiver {
 				List<DianpaoMajiangPanPlayerResultMO> playerResultList = JSON.parseArray(playerResultJson, DianpaoMajiangPanPlayerResultMO.class);
 				for (DianpaoMajiangPanPlayerResultMO list : playerResultList) {
 					if (list.isHu()) {
-						juPrizeCmdService.updateCalTimes(list.getPlayerId());
+						juPrizeCmdService.updateCalTimes(list.getPlayerId(), System.currentTimeMillis());
 					}
 				}
 			} catch (Exception e) {
