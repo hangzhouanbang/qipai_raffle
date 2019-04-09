@@ -9,6 +9,7 @@ import java.util.*;
 
 public class JuPrizeManager {
     private static final long DAY_MESC = 24 * 60 * 60 * 1000;
+    private static final long TIME_ZONE_MESC  = 8 * 60 * 60 * 1000;
 
     private Map<Game, JuPrizeRelease> releaseMap = new HashMap();
     private Map<String, JuPrizeAccount> juPrizeAccountMap = new HashMap<>();
@@ -108,7 +109,7 @@ public class JuPrizeManager {
             account = new JuPrizeAccount(id, 5, nowTime);
             juPrizeAccountMap.put(id, account);
         } else {
-            if (nowTime / DAY_MESC != account.getUpdateTime() / DAY_MESC) {
+            if ((nowTime - TIME_ZONE_MESC) / DAY_MESC != (account.getUpdateTime() - TIME_ZONE_MESC) / DAY_MESC) {
                 account.setCalTimes(5);
                 account.setDayTimes(0);
                 account.setRewardTimes(0);
