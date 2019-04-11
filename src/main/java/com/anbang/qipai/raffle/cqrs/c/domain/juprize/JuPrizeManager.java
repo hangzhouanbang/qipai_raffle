@@ -92,6 +92,7 @@ public class JuPrizeManager {
         JuPrizeAccount account = juPrizeAccountMap.get(id);
         if (account == null) {
             juPrizeAccountMap.put(id, new JuPrizeAccount(id, 5, nowTime));
+            return new JuPrizeResult(juPrizeAccountMap.get(id));
         }
         account.setCalTimes(account.getCalTimes() - 1);
         if (account.getCalTimes() == 0) {
