@@ -37,7 +37,7 @@ public class FangpaoMajiangResultMsgReceiver {
 				JSONObject data = JSON.parseObject(json);
 
 				long finishTime = data.getLong("finishTime");
-				if (finishTime < 1553826334000L) {
+				if (finishTime < 1554944836000L) {
 					return;
 				}
 
