@@ -110,7 +110,7 @@ public class JuPrizeManager {
             account = new JuPrizeAccount(id, 5, nowTime);
             juPrizeAccountMap.put(id, account);
         } else {
-            if ((nowTime - TIME_ZONE_MESC) / DAY_MESC != (account.getUpdateTime() - TIME_ZONE_MESC) / DAY_MESC) {
+            if ((nowTime + TIME_ZONE_MESC) / DAY_MESC != (account.getUpdateTime() + TIME_ZONE_MESC) / DAY_MESC) {
                 account.setCalTimes(5);
                 account.setDayTimes(0);
                 account.setRewardTimes(0);
