@@ -1,15 +1,15 @@
 spring:
   data:
     mongodb:
-#      uri: mongodb://localhost:27017/qipai_raffle
-      database: qipai_raffle
-      host: 172.16.21.50
-      port: 27017
-      username: root
-      password: '''~kkO837/FZ.'
-      authentication-database: admin
-      repositories:
-        enabled: true
+      uri: mongodb://localhost:27017/qipai_raffle
+#      database: qipai_raffle
+#      host: 172.16.21.50
+#      port: 27017
+#      username: root
+#      password: '''~kkO837/FZ.'
+#      authentication-database: admin
+#      repositories:
+#        enabled: true
 
   cloud:
     stream:
@@ -103,6 +103,13 @@ spring:
           contentType: application/json
         paodekuaiResult:
           destination: paodekuaiResult
+          group: qipai-raffle
+          consumer:
+            concurrency: 1
+            partitioned: false
+          contentType: application/json
+        chayuanShuangkouResult:
+          destination: chayuanShuangkouResult
           group: qipai-raffle
           consumer:
             concurrency: 1
