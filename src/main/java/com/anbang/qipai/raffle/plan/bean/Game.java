@@ -7,7 +7,7 @@ package com.anbang.qipai.raffle.plan.bean;
  *
  */
 public enum Game {
-	ruianMajiang, wenzhouMajiang, fangpaoMajiang, dianpaoMajiang, wenzhouShuangkou, doudizhu, paodekuai;
+	ruianMajiang, wenzhouMajiang, fangpaoMajiang, dianpaoMajiang, wenzhouShuangkou, doudizhu, paodekuai, chayuanShuangkou;
 
 	public static Game valueOf(int ordinal) {
 		return Game.values()[ordinal];
